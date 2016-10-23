@@ -1,0 +1,13 @@
+docker run -d --name=openbmp_aio \
+     -e API_FQDN=localhost \
+     -p 3306:3306 -p 2181:2181 -p 9092:9092 -p 5000:5000 -p 8001:8001 \
+     openbmp/aio
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'OpenBMP' WITH GRANT OPTION;
+
+docker run -d --name=openbmp_mysql -e KAFKA_FQDN=localhost -e MEM=5 \
+     -p 3306:3306 -p 8001:8001 \
+     openbmp/mysql
+
+
+rsync --progress --partial -avz /Users/motakuk/Desktop/openbmp-as-path-planet/REST-api/ root@192.241.130.219:/root/api
